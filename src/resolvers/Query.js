@@ -1,18 +1,29 @@
-async function feed(_, args, context, info) {
-    const where = args.filter ? {
+async function feed(_, {filter, skip, first, orderBy}, context, info) {
+    const where = filter ? {
         OR: [
-            {description_contains: args.filter},
-            {url_contains: args.filter}
+            {description_contains: filter},
+            {url_contains: filter}
         ]
     } : {};
 
     const links = await context.prisma.links({
         where,
-        skip: args.skip,
-        first: args.first
+        skip,
+        first,
+        orderBy
     });
 
-    return links
+    const count = await context.prisma
+        .linksConnection({
+            where
+        })
+        .aggregate()
+        .count();
+
+    return {
+        links,
+        count
+    }
 }
 
 module.exports = {

@@ -1,7 +1,7 @@
 const typeDefs = `
 type Query {
     info: String!
-    feed(filter: String, skip: Int, first: Int): [Link!]!
+    feed(filter: String, skip: Int, first: Int, orderBy: LinkOrderByInput): Feed!
     link(id: ID!): Link
 }
 
@@ -41,6 +41,20 @@ type Vote {
     id: ID!
     link: Link!
     user: User!
+}
+
+type Feed {
+    links: [Link!]!
+    count: Int!
+}
+
+enum LinkOrderByInput {
+    description_ASC
+    description_DESC
+    url_ASC
+    url_DESC
+    createdAt_ASC
+    createdAt_DESC
 }
 `;
 
