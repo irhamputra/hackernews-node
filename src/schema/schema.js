@@ -1,7 +1,7 @@
 const typeDefs = `
 type Query {
     info: String!
-    feed: [Link!]!
+    feed(filter: String): [Link!]!
     link(id: ID!): Link
 }
 
